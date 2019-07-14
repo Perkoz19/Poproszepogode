@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Poproszę pogodę</string>
+    <string name="title_activity_maps">Poproszę pogodę</string>
+    <string name="last_known_loc_msg">ostatnia lokalizacja</string>
+    <string name="title">OKIENKO!!!!</string>
+    <string name="weathertitle">WEATHER POP TITLE</string>
+    <string name="poptemperature">Current location temperature</string>
+    <string name="popcondit">Current condition</string>
+    <string name="pophumid">Current humidity</string>
+    <string name="popwind">Current wind</string>
+    <string name="poppress">Current air pressure</string>
+</resources>
