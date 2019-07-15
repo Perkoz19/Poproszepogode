@@ -1,7 +1,6 @@
 package com.example.pogoda;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -21,6 +20,7 @@ public class MarkerInfo extends MapsActivity{
 
     private TextView title;
     private TextView condDescr;
+    private TextView condDet;
     private TextView temp;
     private TextView press;
     private TextView windSpeed;
@@ -48,11 +48,11 @@ public class MarkerInfo extends MapsActivity{
         title = findViewById(R.id.poptitle);
         temp = findViewById(R.id.poptemperature);
         condDescr = findViewById(R.id.popcond);
+        condDet = findViewById(R.id.popconddet);
         press = findViewById(R.id.poppress);
         windSpeed = findViewById(R.id.popwind);
         hum = findViewById(R.id.pophumid);
         imgView = findViewById(R.id.popicon);
-        //temp.setText("" + wi);
     }
 
     private class WeatherInfo extends AsyncTask<String, Void, Weather> {
@@ -70,7 +70,6 @@ public class MarkerInfo extends MapsActivity{
 
             try {
                 weather = Parser.getWeather(data);
-                weather.iconData = ( (new Client()).getImage(weather.currentCondition.getIcon()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -80,30 +79,40 @@ public class MarkerInfo extends MapsActivity{
         @Override
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
-            
+
             title.setText(weather.location.getCity() + ", " + weather.location.getCountry());
-            condDescr.setText(weather.currentCondition.getCondition() + " - " + weather.currentCondition.getDescr());
+            condDescr.setText(weather.currentCondition.getCondition());
+            condDet.setText(weather.currentCondition.getDescr());
             temp.setText(String.format("" + Math.round((weather.temperature.getTemp() - 273.15))) + "°C");
             hum.setText("Humidity: " + weather.currentCondition.getHumidity() + "%");
             press.setText("Air pressure: " + weather.currentCondition.getPressure() + " hPa");
-            windSpeed.setText("Wind speed: " + weather.wind.getSpeed() + " mps");
+            windSpeed.setText("Wind speed: " + weather.wind.getSpeed() + " m/s");
 
-            String xx = weather.currentCondition.getCondition();
+            String xx = condDescr.getText().toString();
             switch(xx){
                 case "Rain":
                     imgView.setImageResource(R.drawable.rain);
+                    break;
                 case "Drizzle":
                     imgView.setImageResource(R.drawable.drizzle);
+                    break;
                 case "Thunderstorm":
                     imgView.setImageResource(R.drawable.thunderstorm);
+                    break;
                 case "Snow":
                     imgView.setImageResource(R.drawable.snow);
+                    break;
                 case "Mist":
                     imgView.setImageResource(R.drawable.mist);
-                case "Clear":
-                    imgView.setImageResource(R.drawable.clear);
+                    break;
                 case "Clouds":
                     imgView.setImageResource(R.drawable.cloud);
+                    break;
+                case "Clear":
+                    imgView.setImageResource(R.drawable.clear);
+                    break;
+                default:
+                    imgView.setImageResource(R.drawable.nodata);
             }
         }
     }
